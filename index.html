@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="color-scheme" content="dark light" />
+<title>康博洲 · Futuristic Resume</title>
+<style>
+:root{
+  --bg:#050816;
+  --card:rgba(12,18,38,.58);
+  --card-border:rgba(255,255,255,.08);
+  --text:#eef4ff;
+  --soft:#9fb3d9;
+  --primary:#4ade80;
+  --secondary:#38bdf8;
+  --third:#8b5cf6;
+  --shadow:0 20px 50px rgba(0,0,0,.45);
+  --radius:28px;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  color:var(--text);
+  background:#050816;
+  overflow-x:hidden;
+}
+
+canvas#particles{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:-5;
+}
+
+.bg-landscape{
+  position:fixed;
+  inset:0;
+  z-index:-10;
+  overflow:hidden;
+}
+
+.bg-landscape::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+  linear-gradient(rgba(5,8,22,.6),rgba(5,8,22,.72)),
+  url('photo2.jpg') center/cover no-repeat;
+  transform:scale(1.08);
+  filter:brightness(.55);
+}
+
+.bg-landscape::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+  radial-gradient(circle at top left, rgba(74,222,128,.2), transparent 26%),
+  radial-gradient(circle at right, rgba(56,189,248,.22), transparent 24%),
+  radial-gradient(circle at bottom, rgba(139,92,246,.2), transparent 28%);
+}
+
+.container{
+  width:min(92%,1180px);
+  margin:auto;
+}
+
+.glass{
+  background:var(--card);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--card-border);
+  box-shadow:var(--shadow);
+}
+
+.nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:999;
+  backdrop-filter:blur(16px);
+  background:rgba(5,8,22,.45);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.nav-wrap{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 0;
+}
+
+.logo{
+  font-size:1.05rem;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.nav-links{
+  display:flex;
+  gap:10px;
+}
+
+.nav-links a{
+  padding:10px 16px;
+  border-radius:999px;
+  color:var(--soft);
+  transition:.25s;
+}
+
+.nav-links a:hover{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+
+.hero{
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  padding-top:120px;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:36px;
+}
+
+.hero-card{
+  padding:42px;
+  border-radius:36px;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero-card::before{
+  content:"";
+  position:absolute;
+  width:280px;
+  height:280px;
+  right:-100px;
+  top:-100px;
+  background:radial-gradient(circle, rgba(74,222,128,.22), transparent 70%);
+}
+
+.kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  color:#7dd3fc;
+  margin-bottom:22px;
+}
+
+.hero h1{
+  font-size:clamp(3rem,9vw,6rem);
+  line-height:1;
+  margin-bottom:22px;
+}
+
+.gradient{
+  background:linear-gradient(135deg,var(--primary),var(--secondary),var(--third));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero p{
+  color:var(--soft);
+  line-height:1.9;
+  font-size:1rem;
+  margin-bottom:24px;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:30px;
+}
+
+.badge{
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+}
+
+.btn{
+  min-height:52px;
+  padding:0 22px;
+  border:none;
+  border-radius:18px;
+  cursor:pointer;
+  font-weight:700;
+  color:#fff;
+  transition:.25s;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--third));
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,.08);
+}
+
+.btn:hover{
+  transform:translateY(-3px);
+}
+
+.hero-side{
+  display:grid;
+  gap:22px;
+}
+
+.fancy-card{
+  padding:28px;
+  border-radius:30px;
+  position:relative;
+  overflow:hidden;
+}
+
+.fancy-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,.04));
+}
+
+.big{
+  font-size:3rem;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.section{
+  padding:90px 0;
+  position:relative;
+}
+
+.section-title{
+  font-size:clamp(1.8rem,4vw,3rem);
+  margin-bottom:18px;
+}
+
+.section-sub{
+  color:var(--soft);
+  margin-bottom:36px;
+  line-height:1.8;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:22px;
+}
+
+.card{
+  padding:26px;
+  border-radius:28px;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-8px) scale(1.01);
+}
+
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:28px;
+}
+
+.tab-btn{
+  padding:12px 18px;
+  border-radius:999px;
+  border:none;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  cursor:pointer;
+}
+
+.tab-btn.active{
+  background:linear-gradient(135deg,var(--secondary),var(--third));
+}
+
+.tab-panel{
+  display:none;
+}
+
+.tab-panel.active{
+  display:block;
+}
+
+.timeline{
+  display:grid;
+  gap:22px;
+}
+
+.timeline-item{
+  padding:26px;
+  border-radius:28px;
+  position:relative;
+}
+
+.timeline-item::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:24px;
+  width:4px;
+  height:72%;
+  border-radius:999px;
+  background:linear-gradient(var(--primary),var(--third));
+}
+
+.timeline-item ul{
+  padding-left:18px;
+  color:var(--soft);
+  line-height:1.9;
+}
+
+.skill-bar{
+  height:12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+  margin-top:12px;
+}
+
+.skill-bar span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--third));
+}
+
+.footer{
+  padding:60px 0;
+  text-align:center;
+  color:var(--soft);
+}
+
+.float-ball{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(40px);
+  opacity:.4;
+  animation:float 8s ease-in-out infinite;
+}
+
+.ball1{
+  width:220px;
+  height:220px;
+  background:#38bdf8;
+  top:10%;
+  left:-80px;
+}
+
+.ball2{
+  width:260px;
+  height:260px;
+  background:#8b5cf6;
+  right:-100px;
+  bottom:12%;
+  animation-delay:2s;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-24px)}
+}
+
+@media(max-width:900px){
+  .hero-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:680px){
+  .nav-links{
+    display:none;
+  }
+
+  .hero-card,
+  .card,
+  .timeline-item{
+    padding:22px;
+  }
+
+  .section{
+    padding:72px 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-landscape"></div>
+<canvas id="particles"></canvas>
+<div class="float-ball ball1"></div>
+<div class="float-ball ball2"></div>
+
+<nav class="nav">
+  <div class="container nav-wrap">
+    <div class="logo">康博洲 · PORTFOLIO</div>
+
+    <div class="nav-links">
+      <a href="#about">关于</a>
+      <a href="#highlight">亮点</a>
+      <a href="#experience">经历</a>
+      <a href="#project">项目</a>
+      <a href="#skills">技能</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="about">
+  <div class="container hero-grid">
+
+    <div class="hero-card glass">
+      <div class="kicker">● FUTURE ENGINEER</div>
+
+      <h1>
+        <span class="gradient">康博洲</span>
+      </h1>
+
+      <p>
+        资源勘查工程本科生，专注于 Python 数据分析、Office 自动化与工程信息管理。
+        致力于将工程思维与数据能力结合，打造高效、规范、可持续的信息处理流程。
+      </p>
+
+      <div class="badges">
+        <div class="badge">Python</div>
+        <div class="badge">Pandas</div>
+        <div class="badge">NumPy</div>
+        <div class="badge">Excel</div>
+        <div class="badge">数据分析</div>
+        <div class="badge">地质工程</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="window.print()">打印简历</button>
+        <button class="btn btn-secondary" id="copyBtn">复制邮箱</button>
+      </div>
+
+      <div style="margin-top:24px;">
+        <img src="photo2.jpg" style="width:100%;height:180px;object-fit:cover;border-radius:16px;">
+      </div>
+    </div>
+
+    <div class="hero-side">
+
+      <div class="fancy-card glass" style="text-align:center;padding:0;overflow:hidden;">
+        <img src="photo1.jpg" style="width:100%;height:280px;object-fit:cover;">
+        <div style="padding:20px;">
+          <h3 style="margin-bottom:8px;">康博洲</h3>
+          <p style="color:var(--soft);font-size:0.9rem;">资源勘查工程 · 本科</p>
+        </div>
+      </div>
+
+      <div class="fancy-card glass">
+        <div class="big">3.88</div>
+        <h3>当前 GPA</h3>
+        <p style="margin-top:10px;color:var(--soft)">
+          专业排名前20%，具备稳定学习能力与工程基础。
+        </p>
+      </div>
+
+      <div class="fancy-card glass">
+        <div class="big">200+</div>
+        <h3>文档数字化</h3>
+        <p style="margin-top:10px;color:var(--soft)">
+          完成历史项目归档与分类优化，提升信息检索效率。
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="highlight">
+  <div class="container">
+    <h2 class="section-title">核心亮点</h2>
+    <p class="section-sub">数据处理、工程学习与团队协作能力的综合体现。</p>
+
+    <div class="grid">
+
+      <div class="card glass">
+        <h3>数学竞赛二等奖</h3>
+        <p style="color:var(--soft);line-height:1.9">
+          全国大学生数学竞赛（非数学类）二等奖。
+        </p>
+      </div>
+
+      <div class="card glass">
+        <h3>职业规划大赛</h3>
+        <p style="color:var(--soft);line-height:1.9">
+          获得省级大学生职业规划大赛三等奖。
+        </p>
+      </div>
+
+      <div class="card glass">
+        <h3>校园组织协作</h3>
+        <p style="color:var(--soft);line-height:1.9">
+          组织策划校级活动，覆盖师生超1500人。
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="experience">
+  <div class="container">
+
+    <h2 class="section-title">经历模块</h2>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="1">实习经历</button>
+      <button class="tab-btn" data-tab="2">校园经历</button>
+    </div>
+
+    <div class="tab-panel active" data-panel="1">
+      <div class="timeline">
+
+        <div class="timeline-item glass">
+          <h3>某科技公司 · 实习生</h3>
+          <p style="margin:10px 0 16px;color:#7dd3fc">2025.07 - 2025.08</p>
+
+          <ul>
+            <li>完成200+项目文档电子化归档。</li>
+            <li>使用Excel高级函数与透视表完成数据分析。</li>
+            <li>参与知识库标准化建设。</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="2">
+      <div class="timeline">
+
+        <div class="timeline-item glass">
+          <h3>青年志愿者协会 · 策划部</h3>
+          <p style="margin:10px 0 16px;color:#7dd3fc">2025.09 - 至今</p>
+
+          <ul>
+            <li>参与环保周、新生迎新等大型活动策划。</li>
+            <li>独立完成宣传方案设计优化。</li>
+            <li>协调20余名志愿者现场执行。</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="project">
+  <div class="container">
+
+    <h2 class="section-title">项目与视觉展示</h2>
+
+    <div class="grid">
+
+      <div class="card glass">
+        <img src="photo3.jpg" style="width:100%;height:200px;object-fit:cover;border-radius:22px;margin-bottom:18px">
+        <h3>Python 数据分析项目</h3>
+        <p style="color:var(--soft);line-height:1.8">
+          基于 Pandas 与 Excel 的数据清洗、汇总与可视化实践。
+        </p>
+      </div>
+
+      <div class="card glass">
+        <img src="photo4.jpg" style="width:100%;height:200px;object-fit:cover;border-radius:22px;margin-bottom:18px">
+        <h3>工程课程研究</h3>
+        <p style="color:var(--soft);line-height:1.8">
+          建立资源勘查与钻井工程知识体系。
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="container">
+    <h2 class="section-title">技能矩阵</h2>
+
+    <div class="grid">
+
+      <div class="card glass">
+        <h3>Python 数据分析</h3>
+        <div class="skill-bar"><span style="width:82%"></span></div>
+      </div>
+
+      <div class="card glass">
+        <h3>Office 高级应用</h3>
+        <div class="skill-bar"><span style="width:92%"></span></div>
+      </div>
+
+      <div class="card glass">
+        <h3>团队协作能力</h3>
+        <div class="skill-bar"><span style="width:84%"></span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  © 2026 康博洲 · Futuristic Resume Website
+</footer>
+
+<script>
+const tabs=document.querySelectorAll('.tab-btn');
+const panels=document.querySelectorAll('.tab-panel');
+
+tabs.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+
+    btn.classList.add('active');
+    document.querySelector(`[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+const copyBtn=document.getElementById('copyBtn');
+copyBtn.onclick=()=>{
+  const email='467155084'+'@'+'qq.com';
+  navigator.clipboard.writeText(email);
+  copyBtn.innerText='邮箱已复制';
+
+  setTimeout(()=>{
+    copyBtn.innerText='复制邮箱';
+  },1500);
+};
+
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+
+let particles=[];
+
+function resize(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+}
+
+resize();
+window.addEventListener('resize',resize);
+
+for(let i=0;i<90;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2+1,
+    dx:(Math.random()-.5)*0.6,
+    dy:(Math.random()-.5)*0.6
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.7)';
+    ctx.fill();
+
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
+  });
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>
